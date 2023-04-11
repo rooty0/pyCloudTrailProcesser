@@ -1,4 +1,4 @@
-FUNCTION = CloudTrail-Watcher
+FUNCTION = cloudtrail-watcher
 REGION = us-west-2
 ZIP_NAME = config-service-lambda-deployment-package.zip
 
@@ -17,7 +17,7 @@ deploy: $(ZIP_NAME)
 		--zip-file fileb://$<
 
 $(ZIP_NAME): deps
-	DOCKER_SCAN_SUGGEST=false docker build --build-arg ZIPFILE=$(ZIP_NAME) -t $(FUNCTION)-lambda:latest -f Dockerfile.lambda . && \
+	DOCKER_SCAN_SUGGEST=false docker buildx build --platform linux/amd64 --build-arg ZIPFILE=$(ZIP_NAME) --tag $(FUNCTION)-lambda:latest --file Dockerfile.lambda . && \
 	ID=$$(docker create $(FUNCTION)-lambda /bin/true) && \
 	docker cp $$ID:/$(ZIP_NAME) .
 

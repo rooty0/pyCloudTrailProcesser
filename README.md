@@ -10,6 +10,8 @@ make
 ```
 The command above produces `config-service-lambda-deployment-package.zip` target that you can deploy directly to lambda using command below:
 ```shell script
+# Create an EMPTY lambda function with name "cloudtrail-watcher" (changeable in Makefile - make sure it's lowercase)
+# Then run the following command to deploy actual code
 make deploy
 ```
 See `Makefile` for more details. To clean everything after the build use following command
