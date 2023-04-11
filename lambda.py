@@ -139,4 +139,5 @@ def unit_test() -> None:
             post_to_sns_details(item)
 
 
-#unit_test()
+if __name__ == '__main__':
+    unit_test()
