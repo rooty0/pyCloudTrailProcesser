@@ -19,4 +19,4 @@ make clean
 
 ## Environment variables
 The following environment variables required by AWS Lambda
-* TBD
+* `SNS_ARN`: the ARN of the SNS topic that you want to publish to 

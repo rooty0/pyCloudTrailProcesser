@@ -4,10 +4,11 @@ import boto3
 import io
 import gzip
 import re
+import os
 
 s3 = boto3.client('s3')
 sns = boto3.client('sns')
-sns_arn = "arn:replace_me"
+sns_arn = os.environ['SNS_ARN']
 
 USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 IGNORED_EVENTS = {"DownloadDBLogFilePortion", "TestScheduleExpression", "TestEventPattern", "LookupEvents",
@@ -15,7 +16,7 @@ IGNORED_EVENTS = {"DownloadDBLogFilePortion", "TestScheduleExpression", "TestEve
 
 
 def post_to_sns(user, event) -> None:
-    message = f'Manual AWS Changed Detected:  {user} --> {event}'
+    message = f"Manual AWS Changed Detected:  {user} --> {event}"
     sns_publish(message)
 
 
