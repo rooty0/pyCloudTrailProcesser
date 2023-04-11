@@ -8,7 +8,7 @@ import os
 
 s3 = boto3.client('s3')
 sns = boto3.client('sns')
-sns_arn = os.environ['SNS_ARN']
+sns_arn = os.environ.get('SNS_ARN', '')
 
 USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 IGNORED_EVENTS = {"DownloadDBLogFilePortion", "TestScheduleExpression", "TestEventPattern", "LookupEvents",
@@ -26,11 +26,12 @@ def post_to_sns_details(message) -> None:
 
 
 def sns_publish(message) -> None:
-    sns.publish(
-        TargetArn=sns_arn,
-        Message=json.dumps({'default': json.dumps(message)}),
-        MessageStructure='json'
-    )
+    if sns_arn:
+        sns.publish(
+            TargetArn=sns_arn,
+            Message=json.dumps({'default': json.dumps(message)}),
+            MessageStructure='json'
+        )
 
 
 def check_regex(expr, txt) -> bool:
