@@ -18,7 +18,12 @@ See `Makefile` for more details. To clean everything after the build use followi
 ```shell script
 make clean
 ```
+Another example how to upload new version of function after some changes
+```bash
+make REGION=us-west-1 clean build deploy
+```
 
 ## Environment variables
 The following environment variables required by AWS Lambda
 * `SNS_ARN`: the ARN of the SNS topic that you want to publish to 
+* `IGNORE_EVENT_SOURCES`: optional variable to ignore event sources
