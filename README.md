@@ -23,6 +23,13 @@ Another example how to upload new version of function after some changes
 make REGION=us-west-1 clean build deploy
 ```
 
+###
+To test function do something like
+```bash
+aws logs tail "/aws/lambda/cloudtrail-watcher" --region us-west-1 --follow
+aws ec2 create-tags --resources i-060d00000000fd95b --tags "Key=TrStanFindMe,Value=$(date +%s)" --region us-east-1
+```
+
 ## Environment variables
 The following environment variables required by AWS Lambda
 * `SNS_ARN`: the ARN of the SNS topic that you want to publish to 
