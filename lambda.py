@@ -14,14 +14,28 @@ USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 IGNORED_EVENTS = {
     "DownloadDBLogFilePortion", "TestScheduleExpression", "TestEventPattern", "LookupEvents",
     "listDnssec", "Decrypt", "REST.GET.OBJECT_LOCK_CONFIGURATION", "ConsoleLogin",
-    "Authenticate", "Federate", "UserAuthentication"  # SSO
+    "Authenticate", "Federate", "UserAuthentication", "CreateToken"  # SSO
 }
 IGNORED_EVENT_SRCS = {i.strip() for i in os.environ.get('IGNORE_EVENT_SOURCES', '').split(",")}
+NOTIFICATION_PLATFORM = {'SNS', 'SLACK'}
 
 
 #
 # Slack support https://github.com/matthew-harper/pyCloudTrailProcesser/compare/master...slitsevych:lambda-cloudtrail-parser:master?diff=split
 #
+def post_notification(records) -> None:
+
+    if 'SNS' in NOTIFICATION_PLATFORM:
+        for item in records:
+            post_to_sns(
+                get_user_email(item['userIdentity']['principalId']),
+                item['eventName'],
+                item['eventID']
+            )
+        # Posting detailed report
+        post_to_sns_details(records)
+
+
 def post_to_sns(user, event_name, event_id) -> None:
     message = f"Manual AWS Changed Detected:  {user} --> {event_name} (Event ID: {event_id})"
     sns_publish(message)
@@ -150,14 +164,8 @@ def lambda_handler(event, context) -> None:
                         f"Found {len(output_dict)} manual changes. "
                         f"Request ID(s): {[i.get('requestID', 'UNKNOWN') for i in output_dict]}"
                     )
-                    for item in output_dict:
-                        post_to_sns(
-                            get_user_email(item['userIdentity']['principalId']),
-                            item['eventName'],
-                            item['eventID']
-                        )
-                    # Posting detailed report
-                    post_to_sns_details(output_dict)
+
+                    post_notification(output_dict)
 
             return response['ContentType']
         except Exception as e:
@@ -168,7 +176,8 @@ def lambda_handler(event, context) -> None:
 
 def unit_test() -> None:
     with open('sample.txt') as json_file:
-        event_json = json.load(json_file)
+        import record_example
+        event_json = record_example.structure
         output_dict = [record for record in event_json['Records'] if filter_user_events(record)]
         for item in output_dict:
             user_email = get_user_email(item['userIdentity']['principalId'])

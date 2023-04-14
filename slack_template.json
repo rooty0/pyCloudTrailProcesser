@@ -1,0 +1,41 @@
+{
+	"attachments": [
+		{
+			"color": "#FF0000",
+			"blocks": [
+				{
+					"type": "section",
+					"text": {
+						"type": "mrkdwn",
+						"text": "Manual AWS Change Detected:\n*<mailto:elliott@truera.com|elliott@truera.com>*"
+					}
+				},
+				{
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": "*Event name:*\nCreateToken"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Event source:*\nsso.amazonaws.com"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Event ID:*\n54e06bbd-51cd-4a6c-9b2e-417757e2e156"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*When:*\nThu Jan 28 12:32:01"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Error:*\nAccess deny."
+						}
+					]
+				}
+			]
+		}
+	]
+}
