@@ -17,7 +17,7 @@ IGNORED_EVENTS = {
     "Authenticate", "Federate", "UserAuthentication", "CreateToken"  # SSO
 }
 IGNORED_EVENT_SRCS = {i.strip() for i in os.environ.get('IGNORE_EVENT_SOURCES', '').split(",")}
-NOTIFICATION_PLATFORM = {'SNS', 'SLACK'}
+NOTIFICATION_PLATFORM = {i.strip() for i in os.environ.get('NOTIFICATION_PLATFORM', 'SNS, SLACK').split(",")}
 
 
 #
@@ -34,6 +34,10 @@ def post_notification(records) -> None:
             )
         # Posting detailed report
         post_to_sns_details(records)
+
+    if 'SLACK' in NOTIFICATION_PLATFORM:
+        for item in records:
+            pass
 
 
 def post_to_sns(user, event_name, event_id) -> None:
@@ -175,16 +179,20 @@ def lambda_handler(event, context) -> None:
 
 
 def unit_test() -> None:
-    with open('sample.txt') as json_file:
-        import record_example
-        event_json = record_example.structure
-        output_dict = [record for record in event_json['Records'] if filter_user_events(record)]
+    import record_example
+    event_json = record_example.structure
+    output_dict = [record for record in event_json['Records'] if filter_user_events(record)]
+
+    if len(output_dict) > 0:
+        print(
+            f"Found {len(output_dict)} manual changes. "
+        )
+
         for item in output_dict:
             user_email = get_user_email(item['userIdentity']['principalId'])
-            print('Manual changes:')
             print(f"{user_email} -- {item['eventName']}")
-            post_to_sns(get_user_email(item['userIdentity']['principalId']), item['eventName'])
-            post_to_sns_details(item)
+
+        post_notification(output_dict)
 
 
 if __name__ == '__main__':
