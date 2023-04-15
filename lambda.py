@@ -5,10 +5,18 @@ import io
 import gzip
 import re
 import os
+import slack_sdk
+import slack_template
+
+from slack_sdk.errors import SlackApiError
+
+__version__ = 1.0
 
 s3 = boto3.client('s3')
 sns = boto3.client('sns')
 sns_arn = os.environ.get('SNS_ARN', '')
+SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN', '')
+SLACK_CHANNEL_ID = os.environ.get('SLACK_CHANNEL_ID', '')
 
 USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 IGNORED_EVENTS = {
@@ -20,9 +28,6 @@ IGNORED_EVENT_SRCS = {i.strip() for i in os.environ.get('IGNORE_EVENT_SOURCES', 
 NOTIFICATION_PLATFORM = {i.strip() for i in os.environ.get('NOTIFICATION_PLATFORM', 'SNS, SLACK').split(",")}
 
 
-#
-# Slack support https://github.com/matthew-harper/pyCloudTrailProcesser/compare/master...slitsevych:lambda-cloudtrail-parser:master?diff=split
-#
 def post_notification(records) -> None:
 
     if 'SNS' in NOTIFICATION_PLATFORM:
@@ -36,8 +41,44 @@ def post_notification(records) -> None:
         post_to_sns_details(records)
 
     if 'SLACK' in NOTIFICATION_PLATFORM:
+        slack = slack_sdk.WebClient(token=SLACK_BOT_TOKEN)
         for item in records:
-            pass
+            post_to_slack(slack, item)
+
+
+def post_to_slack(client, record) -> None:
+    user_email = get_user_email(record['userIdentity']['principalId'])
+    event_name = record.get('eventName')
+    event_id = record.get('eventID')
+    message = slack_template.SlackTemplate(
+        email=user_email,
+        user_identity=record.get('userIdentity', {}).get('principalId', 'UNKNOWN'),
+        event_name=event_name,
+        event_source=record.get('eventSource'),
+        event_id=event_id,
+        event_time=record.get('eventTime'),
+        error=record.get('errorMessage', '')
+    )
+    try:
+        response = client.chat_postMessage(
+            channel=SLACK_CHANNEL_ID,
+            attachments=[message.render_attachment()],
+            text=f"Manual AWS Changes Detected: *<mailto:{user_email}|{user_email}>* --> *{event_name}* (Event ID: _{event_id}_)",
+        )
+        client.files_upload_v2(
+            channel=SLACK_CHANNEL_ID,
+            thread_ts=response.data['ts'],
+            title='Review Full LOG',
+            filename=f"full_log_{record.get('eventID')}.json",
+            content=json.dumps(
+                record, indent=4, sort_keys=True, ensure_ascii=False, separators=(',', ': ')
+            )
+        )
+
+    except SlackApiError as e:
+        # You will get a SlackApiError if "ok" is False
+        print(e.response["error"])
+        raise e
 
 
 def post_to_sns(user, event_name, event_id) -> None:
@@ -57,7 +98,7 @@ def sns_publish(message) -> None:
             Message=json.dumps(
                 {
                     'default': json.dumps(
-                        message, indent=4, sort_keys=False, ensure_ascii=False, separators=(',', ': ')
+                        message, indent=4, sort_keys=True, ensure_ascii=False, separators=(',', ': ')
                     )
                 }
             ),
@@ -185,12 +226,12 @@ def unit_test() -> None:
 
     if len(output_dict) > 0:
         print(
-            f"Found {len(output_dict)} manual changes. "
+            f"Found {len(output_dict)} manual changes by"
         )
 
         for item in output_dict:
             user_email = get_user_email(item['userIdentity']['principalId'])
-            print(f"{user_email} -- {item['eventName']}")
+            print(f"  - {user_email}: {item['eventName']}")
 
         post_notification(output_dict)
 

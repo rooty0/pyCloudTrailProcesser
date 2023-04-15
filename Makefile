@@ -6,7 +6,7 @@ ZIP_NAME = config-service-lambda-deployment-package.zip
 
 build: $(ZIP_NAME)
 
-deps: requirements.txt Dockerfile.lambda lambda.py
+deps: requirements.txt Dockerfile.lambda lambda.py slack_template.py
 	@[ -d $@ ] || mkdir $@
 	cp *.py $@/
 
