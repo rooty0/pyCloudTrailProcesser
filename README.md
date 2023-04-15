@@ -31,6 +31,9 @@ aws ec2 create-tags --resources i-060d00000000fd95b --tags "Key=TrStanFindMe,Val
 ```
 
 ## Environment variables
-The following environment variables required by AWS Lambda
+The following environment variables acceptable by AWS Lambda
+* `NOTIFICATION_PLATFORM`: send notifications using `SNS` and/or `SLACK` (default: `SNS, SLACK`)
 * `SNS_ARN`: the ARN of the SNS topic that you want to publish to 
+* `SLACK_BOT_TOKEN`: OAuth token, you need to create an app to [generate](https://api.slack.com/enterprise/apps) one
+* `SLACK_CHANNEL_ID`: id of a Slack channel, required if you use `SLACK` notification (example: `C0112ML201K`)
 * `IGNORE_EVENT_SOURCES`: optional variable to ignore event sources

@@ -1,0 +1,2 @@
+-i https://pypi.org/simple
+slack-sdk==3.21.1
