@@ -22,7 +22,8 @@ USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 IGNORED_EVENTS = {
     "DownloadDBLogFilePortion", "TestScheduleExpression", "TestEventPattern", "LookupEvents",
     "listDnssec", "Decrypt", "REST.GET.OBJECT_LOCK_CONFIGURATION", "ConsoleLogin",
-    "Authenticate", "Federate", "UserAuthentication", "CreateToken"  # SSO
+    "Authenticate", "Federate", "UserAuthentication", "CreateToken",  # SSO
+    "SendSSHPublicKey",  # SSH to EC2 from AWS WebUI
 }
 IGNORED_EVENT_SRCS = {i.strip() for i in os.environ.get('IGNORE_EVENT_SOURCES', '').split(",")}
 NOTIFICATION_PLATFORM = {i.strip() for i in os.environ.get('NOTIFICATION_PLATFORM', 'SNS, SLACK').split(",")}
@@ -207,7 +208,7 @@ def lambda_handler(event, context) -> None:
                 if len(output_dict) > 0:
                     print(
                         f"Found {len(output_dict)} manual changes. "
-                        f"Request ID(s): {[i.get('requestID', 'UNKNOWN') for i in output_dict]}"
+                        f"Event ID(s): {[i.get('eventID', 'UNKNOWN') for i in output_dict]}"
                     )
 
                     post_notification(output_dict)
