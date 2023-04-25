@@ -18,7 +18,6 @@ sns_arn = os.environ.get('SNS_ARN', '')
 SLACK_BOT_TOKEN = os.environ.get('SLACK_BOT_TOKEN', '')
 SLACK_CHANNEL_ID = os.environ.get('SLACK_CHANNEL_ID', '')
 
-# USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 USER_AGENTS = {i.strip() for i in os.environ.get(
     'USER_AGENTS',
     'console.amazonaws.com, Coral/Jakarta, Coral/Netty4'
