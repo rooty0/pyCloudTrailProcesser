@@ -20,7 +20,8 @@ SLACK_CHANNEL_ID = os.environ.get('SLACK_CHANNEL_ID', '')
 
 # USER_AGENTS = {"console.amazonaws.com", "Coral/Jakarta", "Coral/Netty4"}
 USER_AGENTS = {i.strip() for i in os.environ.get(
-    'USER_AGENTS', 'console.amazonaws.com, Coral/Jakarta, Coral/Netty4'
+    'USER_AGENTS',
+    'console.amazonaws.com, Coral/Jakarta, Coral/Netty4'
 ).split(",")}
 USER_AGENT_DETECT_METHOD = os.environ.get('USER_AGENT_DETECT_METHOD', 'INCLUSIVE').lower()  # inclusive / exclusive
 
@@ -249,7 +250,7 @@ def unit_test() -> None:
 
     if len(output_dict) > 0:
         print(
-            f"Found {len(output_dict)} manual changes by"
+            f"Found {len(output_dict)} manual changes by {'(INCLUDING ACCESS DENIED)' if NOTIFY_ALL_ACCESS_ISSUES else ''}"
         )
 
         for item in output_dict:
