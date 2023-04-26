@@ -68,7 +68,7 @@ def post_to_slack(client, record) -> None:
         event_source=record.get('eventSource'),
         event_id=event_id,
         event_time=record.get('eventTime'),
-        error=record.get('errorMessage', '')
+        error=record.get('errorMessage') if 'errorMessage' in record else record.get('errorCode', '')
     )
     try:
         response = client.chat_postMessage(
