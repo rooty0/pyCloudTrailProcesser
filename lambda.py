@@ -232,7 +232,8 @@ def lambda_handler(event, context) -> None:
                 if len(output_dict) > 0:
                     print(
                         f"Found {len(output_dict)} manual changes. "
-                        f"Event ID(s): {[i.get('eventID', 'UNKNOWN') for i in output_dict]}"
+                        f"Event ID: {[i.get('eventID', 'UNKNOWN') for i in output_dict]} "
+                        f"at S3://{bucket}/{key}"
                     )
 
                     post_notification(output_dict)
