@@ -1,4 +1,5 @@
 # pyCloudTrailProcesser
+![pyCloudTrailProcesser](https://repository-images.githubusercontent.com/626187051/9882005b-c2c1-4308-8c10-5083808b045e)
 Python AWS Lambda function parses CloudTrail Logs to find AWS Console manual changes and notifies you about the changes
 
 This project is an improved fork of the original [pyCloudTrailProcesser](https://github.com/matthew-harper/pyCloudTrailProcesser) from Matthew Harper. The original version is broken, too noisy, and pretty limited
@@ -26,6 +27,8 @@ make REGION=us-west-1 clean build deploy
 ```
 
 ### Other configuration
+For the `S3 trigger` and `CloudTrail` configuration please see [Protect your Infrastructure with Real-time Notifications of AWS Console User Changes](https://towardsdatascience.com/protect-your-infrastructure-with-real-time-notifications-of-aws-console-user-changes-3144fd18c680)
+
 Don't forget to change the lambda function **timeout** (max runtime).
 A default value of 3 seconds sometimes is not enough to parse logs and send results back to you.
 
