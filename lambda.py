@@ -23,6 +23,7 @@ USER_AGENTS = {i.strip() for i in os.environ.get(
     'USER_AGENTS',
     'console.amazonaws.com, Coral/Jakarta, Coral/Netty4'
 ).split(",")}
+# USER_AGENT_DETECT_METHOD not implemented yet
 USER_AGENT_DETECT_METHOD = os.environ.get('USER_AGENT_DETECT_METHOD', 'INCLUSIVE').lower()  # inclusive / exclusive
 
 IGNORED_EVENTS = {
@@ -33,7 +34,10 @@ IGNORED_EVENTS = {
 }
 IGNORED_EVENT_SRCS = {i.strip() for i in os.environ.get('IGNORE_EVENT_SOURCES', '').split(",")}
 NOTIFICATION_PLATFORM = {i.strip() for i in os.environ.get('NOTIFICATION_PLATFORM', 'SNS, SLACK').split(",")}
-NOTIFY_ALL_ACCESS_ISSUES = True if os.environ.get('NOTIFY_ALL_ACCESS_ISSUES', 'yes') == 'yes' else False
+NOTIFY_ALL_ACCESS_ISSUES = True if os.environ.get('NOTIFY_ALL_ACCESS_ISSUES', 'no') == 'yes' else False
+NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT = {
+    i.strip() for i in os.environ.get('NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT', '').split(",")
+}
 
 
 def post_notification(records) -> None:
@@ -196,7 +200,9 @@ def filter_user_events(event) -> bool:
     #     print("Event ID: {} / is_match: {} / is_ignored_event: {} / is_in_event: {}"
     #           .format(event.get('requestID', 'UNKNOWN'), is_match, is_ignored_event, is_in_event))
 
-    if NOTIFY_ALL_ACCESS_ISSUES and event.get('errorCode', '') == 'AccessDenied':
+    if NOTIFY_ALL_ACCESS_ISSUES and \
+            event.get('errorCode', '') == 'AccessDenied' and \
+            event.get('eventName') not in NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT:
         return True
 
     status = is_match and not is_read_only and not is_ignored_event and not if_ignored_event_source and not is_in_event

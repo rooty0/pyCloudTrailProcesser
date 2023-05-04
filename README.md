@@ -36,4 +36,6 @@ The following environment variables acceptable by AWS Lambda
 * `SNS_ARN`: the ARN of the SNS topic that you want to publish to 
 * `SLACK_BOT_TOKEN`: OAuth token, you need to create an app to [generate](https://api.slack.com/enterprise/apps) one
 * `SLACK_CHANNEL_ID`: id of a Slack channel, required if you use `SLACK` notification (example: `C0112ML201K`)
-* `IGNORE_EVENT_SOURCES`: optional variable to ignore event sources
+* `IGNORE_EVENT_SOURCES`: optional variable to ignore event sources (example: `athena.amazonaws.com, somestuff.amazon.com`)
+* `NOTIFY_ALL_ACCESS_ISSUES`: option enables a special mode allowing you to receive ALL access issue (Access Denied) notifications regardless of whether it was a manual change. Please note you also get all read-only access denied events (default: `no`)
+* `NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT`: list of event names to exclude from all access denied notify (example: `ListNotificationHubs, SomeStuffBoom`)
