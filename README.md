@@ -53,3 +53,6 @@ An example how to setup environment variables with `aws cli`:
 aws lambda update-function-configuration --function-name cloudtrail-watcher \
     --environment "Variables={IGNORE_EVENT_SOURCES=athena.amazonaws.com,NOTIFICATION_PLATFORM=SLACK,NOTIFY_ALL_ACCESS_ISSUES=yes,NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT=ListNotificationHubs,SLACK_BOT_TOKEN=xoxb-93,SLACK_CHANNEL_ID=aaaa}"
 ```
+
+## Contribute
+Feel free to create a PR 
