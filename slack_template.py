@@ -51,7 +51,6 @@ class SlackTemplate:
 	event_id: str
 	event_time: str
 	error: str
-	# result: dict = field(init=False)
 	color: str = field(init=False)
 
 	def __post_init__(self) -> None:

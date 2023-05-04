@@ -149,6 +149,95 @@ data_container = \
                 'cipherSuite': 'ECDHE-RSA-AES128-GCM-SHA256',
                 'clientProvidedHostHeader': 'oidc.us-west-2.amazonaws.com'
             }
+        },
+        # Sample 4
+        {
+            'awsRegion': 'us-west-2',
+            'errorCode': 'AccessDenied',
+            'errorMessage': 'User: arn:aws:sts::062000000000:assumed-role/AWSReservedSSO_aaaa111aab/some@domain.com is not authorized to perform: ec2-instance-connect:SendSerialConsoleSSHPublicKey on resource: arn:aws:ec2:us-west-2:062000000000:instance/i-0ff13dad00ef00000 because no identity-based policy allows the ec2-instance-connect:SendSerialConsoleSSHPublicKey action',
+            'eventCategory': 'Management',
+            'eventID': 'bb0000b3-0edc-000c-a00d-0f000d00e0b0',
+            'eventName': 'SendSerialConsoleSSHPublicKey',
+            'eventSource': 'ec2-instance-connect.amazonaws.com',
+            'eventTime': '2023-04-25T21:47:35Z',
+            'eventType': 'AwsApiCall',
+            'eventVersion': '1.08',
+            'managementEvent': True,
+            'readOnly': False,
+            'recipientAccountId': '062000000000',
+            'requestID': 'd6ab000b-0c0b-00eb-0000-00df0fd0a0b6',
+            'requestParameters': None,
+            'responseElements': None,
+            'sessionCredentialFromConsole': 'true',
+            'sourceIPAddress': '82.210.30.100',
+            'tlsDetails': {
+                'cipherSuite': 'TLS_AES_128_GCM_SHA256',
+                'clientProvidedHostHeader': 'ec2-instance-connect.us-west-2.amazonaws.com',
+                'tlsVersion': 'TLSv1.3'
+            },
+            'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+            'userIdentity': {
+                'accessKeyId': 'ASIAQ00IPRMSFH0Z0R0U',
+                'accountId': '062000000000',
+                'arn': 'arn:aws:sts::062000000000:assumed-role/AWSReservedSSO_aaaa111aab/some@domain.com',
+                'principalId': 'AROAQ00IPRMBBBBSP0ZXT:some@domain.com',
+                'sessionContext': {
+                    'attributes': {
+                        'creationDate': '2023-04-25T20:03:47Z',
+                        'mfaAuthenticated': 'false'
+                    },
+                    'sessionIssuer': {
+                        'accountId': '062000000000',
+                        'arn': 'arn:aws:iam::062000000000:role/aws-reserved/sso.amazonaws.com/us-west-2/AWSReservedSSO_aaaa111aab',
+                        'principalId': 'AROAQ00IPRMBBBBSP0ZXT',
+                        'type': 'Role',
+                        'userName': 'AWSReservedSSO_aaaa111aab'
+                    },
+                    'webIdFederationData': {}
+                },
+                'type': 'AssumedRole'
+            }
+        },
+        # Sample 5
+        {
+            'awsRegion': 'us-east-1',
+            'errorCode': 'AccessDenied',
+            'eventCategory': 'Management',
+            'eventID': 'eaea36bb-2adf-0000-a49a-00b00000150f',
+            'eventName': 'ListNotificationHubs',
+            'eventSource': 'notifications.amazonaws.com',
+            'eventTime': '2023-05-04T17:24:27Z',
+            'eventType': 'AwsApiCall',
+            'eventVersion': '1.08',
+            'managementEvent': True,
+            'readOnly': True,
+            'recipientAccountId': '000000000000',
+            'requestID': '00b9ca0c-3f75-48a6-a000-fc0000e00002',
+            'requestParameters': None,
+            'responseElements': None,
+            'sourceIPAddress': '50.50.20.100',
+            'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'userIdentity': {
+                'accessKeyId': 'ASIAQ00IPPPPDNSSX00Q',
+                'accountId': '000000000000',
+                'arn': 'arn:aws:sts::000000000000:assumed-role/AWSReservedSSO_A_0a0000f3d000ab0e/sean@domain.com',
+                'principalId': 'AROAQ47IAAAAAOZFXBBBB:sean@domain.com',
+                'sessionContext': {
+                    'attributes': {
+                        'creationDate': '2023-05-04T17:19:47Z',
+                        'mfaAuthenticated': 'false'
+                    },
+                    'sessionIssuer': {
+                        'accountId': '000000000000',
+                        'arn': 'arn:aws:iam::000000000000:role/aws-reserved/sso.amazonaws.com/us-west-2/AWSReservedSSO_A_0a0000f3d000ab0e',
+                        'principalId': 'AROAQ47IAAAAAOZFXBBBB',
+                        'type': 'Role',
+                        'userName': 'AWSReservedSSO_A_0a0000f3d000ab0e'
+                    },
+                    'webIdFederationData': {}
+                },
+                'type': 'AssumedRole'
+            }
         }
     ]
 
