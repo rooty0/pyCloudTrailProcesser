@@ -197,6 +197,47 @@ data_container = \
                 },
                 'type': 'AssumedRole'
             }
+        },
+        # Sample 5
+        {
+            'awsRegion': 'us-east-1',
+            'errorCode': 'AccessDenied',
+            'eventCategory': 'Management',
+            'eventID': 'eaea36bb-2adf-0000-a49a-00b00000150f',
+            'eventName': 'ListNotificationHubs',
+            'eventSource': 'notifications.amazonaws.com',
+            'eventTime': '2023-05-04T17:24:27Z',
+            'eventType': 'AwsApiCall',
+            'eventVersion': '1.08',
+            'managementEvent': True,
+            'readOnly': True,
+            'recipientAccountId': '000000000000',
+            'requestID': '00b9ca0c-3f75-48a6-a000-fc0000e00002',
+            'requestParameters': None,
+            'responseElements': None,
+            'sourceIPAddress': '50.50.20.100',
+            'userAgent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36',
+            'userIdentity': {
+                'accessKeyId': 'ASIAQ00IPPPPDNSSX00Q',
+                'accountId': '000000000000',
+                'arn': 'arn:aws:sts::000000000000:assumed-role/AWSReservedSSO_A_0a0000f3d000ab0e/sean@domain.com',
+                'principalId': 'AROAQ47IAAAAAOZFXBBBB:sean@domain.com',
+                'sessionContext': {
+                    'attributes': {
+                        'creationDate': '2023-05-04T17:19:47Z',
+                        'mfaAuthenticated': 'false'
+                    },
+                    'sessionIssuer': {
+                        'accountId': '000000000000',
+                        'arn': 'arn:aws:iam::000000000000:role/aws-reserved/sso.amazonaws.com/us-west-2/AWSReservedSSO_A_0a0000f3d000ab0e',
+                        'principalId': 'AROAQ47IAAAAAOZFXBBBB',
+                        'type': 'Role',
+                        'userName': 'AWSReservedSSO_A_0a0000f3d000ab0e'
+                    },
+                    'webIdFederationData': {}
+                },
+                'type': 'AssumedRole'
+            }
         }
     ]
 

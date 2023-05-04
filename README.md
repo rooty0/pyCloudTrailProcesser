@@ -1,5 +1,5 @@
 # pyCloudTrailProcesser
-Python AWS Lambda function to parse CloudTrail Logs for AWS Console Changes and Publish to SNS
+Python AWS Lambda function to parse CloudTrail Logs for AWS Console manual changes and notifies you about the changes
 
 ## Configuration Service Lambda
 
