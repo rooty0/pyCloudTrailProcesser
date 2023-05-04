@@ -1,5 +1,5 @@
 # pyCloudTrailProcesser
-![pyCloudTrailProcesser](https://repository-images.githubusercontent.com/626187051/636aad46-65d9-47a2-be77-610d2c962fac)
+![pyCloudTrailProcesser](https://repository-images.githubusercontent.com/626187051/9882005b-c2c1-4308-8c10-5083808b045e)
 Python AWS Lambda function parses CloudTrail Logs to find AWS Console manual changes and notifies you about the changes
 
 This project is an improved fork of the original [pyCloudTrailProcesser](https://github.com/matthew-harper/pyCloudTrailProcesser) from Matthew Harper. The original version is broken, too noisy, and pretty limited
