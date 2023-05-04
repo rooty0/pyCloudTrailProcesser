@@ -9,9 +9,8 @@ import slack_sdk
 import slack_template
 
 from slack_sdk.errors import SlackApiError
-from time import sleep
 
-__version__ = 2.0
+__version__ = 2.1
 
 s3 = boto3.client('s3')
 sns = boto3.client('sns')
@@ -82,7 +81,6 @@ def post_to_slack(client, record) -> None:
             text=f"Manual AWS Changes Detected: "
                  f"*<mailto:{user_email}|{user_email}>* --> *{event_name}* (Event ID: _{event_id}_)",
         )
-        sleep(0.5)  # looks like Slack doesn't like it when we send it right away?
         client.files_upload_v2(
             channel=SLACK_CHANNEL_ID,
             thread_ts=response.data['ts'],
