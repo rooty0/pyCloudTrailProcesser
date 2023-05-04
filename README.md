@@ -26,7 +26,11 @@ make REGION=us-west-1 clean build deploy
 ```
 
 ### Other configuration
-Don't forget to change the lambda function timeout (max runtime). A default value of 3 seconds sometimes is not enough to parse logs and send results back to you
+Don't forget to change the lambda function **timeout** (max runtime).
+A default value of 3 seconds sometimes is not enough to parse logs and send results back to you.
+
+Please note that the lambda typically runs less than a second in terms of performance. In some cases, a big chunk of logs is ingested, so the lambda could run for more than 3 seconds.
+In the example below, we set the timeout to 10 seconds, which should be sufficient:
 ```bash
 aws lambda update-function-configuration --function-name cloudtrail-watcher --timeout 10
 ```
@@ -35,7 +39,7 @@ aws lambda update-function-configuration --function-name cloudtrail-watcher --ti
 To see logs and test function do something like
 ```bash
 aws logs tail "/aws/lambda/cloudtrail-watcher" --region us-west-1 --follow  # where "cloudtrail-watcher" is your function name
-aws ec2 create-tags --resources i-060d00000000fd95b --tags "Key=TrStanFindMe,Value=$(date +%s)" --region us-east-1
+aws ec2 create-tags --resources i-060d00000000fd95b --tags "Key=TrStanFindMe,Value=$(date +%s)" --region us-east-1  # creates "write" event to notify you
 ```
 
 ## Environment variables
@@ -48,11 +52,14 @@ The following environment variables acceptable by AWS Lambda
 * `NOTIFY_ALL_ACCESS_ISSUES`: option enables a special mode allowing you to receive ALL access issue (Access Denied) notifications regardless of whether it was a manual change. Please note you also get all read-only access denied events (default: `no`)
 * `NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT`: list of event names to exclude from all access denied notify (example: `ListNotificationHubs, SomeStuffBoom`)
 
-An example how to setup environment variables with `aws cli`:
+An example how to set up environment variables with `aws cli` (or see [this](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) for AWS Console option):
 ```bash
 aws lambda update-function-configuration --function-name cloudtrail-watcher \
     --environment "Variables={IGNORE_EVENT_SOURCES=athena.amazonaws.com,NOTIFICATION_PLATFORM=SLACK,NOTIFY_ALL_ACCESS_ISSUES=yes,NOTIFY_ALL_ACCESS_ISSUES_EXCLUDE_EVENT=ListNotificationHubs,SLACK_BOT_TOKEN=xoxb-93,SLACK_CHANNEL_ID=aaaa}"
 ```
 
+## Security concerns
+A user could technically manipulate a user-agent field, potentially bringing false results. Don't use this tool as a single point of truth from a security standpoint
+
 ## Contribute
-Feel free to create a PR 
+Feel free to create a PR to `fork` branch. *I think at some point we do migrate to master branch, not now tho*
